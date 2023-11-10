@@ -24,6 +24,7 @@ def calculate_adherence_metrics(medication_fills, measurement_end_date):
             if fill == medication_fills[-1]:  # For immediate metrics, only consider the last fill
                 immediate_covered_days.add(fill_date + timedelta(days=i))
 
+
     # Calculate cumulative metrics
     cumulative_next_fill_date = max(covered_days) + timedelta(days=1) if covered_days else None
     cumulative_pdc = calculate_pdc(covered_days, first_fill_date, measurement_end_date)
@@ -31,6 +32,8 @@ def calculate_adherence_metrics(medication_fills, measurement_end_date):
     # Calculate immediate metrics
     immediate_next_fill_date = max(immediate_covered_days) + timedelta(days=1) if immediate_covered_days else None
     immediate_pdc = calculate_pdc(immediate_covered_days, first_fill_date, measurement_end_date)
+
+
 
     # Today's date to check if medication is past due
     today = datetime.now()
@@ -46,7 +49,7 @@ def calculate_adherence_metrics(medication_fills, measurement_end_date):
                     today - cumulative_next_fill_date).days if cumulative_next_fill_date and today > cumulative_next_fill_date else 0,
         "IMMEDIATEPDCNBR": immediate_pdc,
         "CUMULATIVEPDCNBR": cumulative_pdc,
-        # ... Other metrics calculations
+
     }
 
     return metrics
